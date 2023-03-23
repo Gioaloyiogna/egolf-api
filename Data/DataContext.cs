@@ -14,4 +14,8 @@ public class DataContext : DbContext
     public DbSet<GameSchedule> GameSchedules { get; set; }
     
     public DbSet<Course> Courses { get; set; }
+
+    public DbSet<Caddy> Caddies { get; set; }
+    
+    public DbSet<TeeSlot> TeeSlots { get; set; }
 } 
