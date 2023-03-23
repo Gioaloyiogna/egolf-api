@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\ADMIN\RiderProjects\GolfWebApi\bin\Release\net7.0\publish\</_PublishTargetUrl>
+    <History>True|2023-03-22T12:34:29.8144227Z;True|2023-03-22T10:41:50.8488621+00:00;</History>
+    <LastFailureDetails />
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>data source=173.248.129.77,1439%3buser id=sa%3bpassword=Pa%24%24w0rd%4021%3binitial catalog=EgolfDBnew%3bPersist Security Info=true%3b TrustServerCertificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="GolfWebApi.Data.DataContext">
+      <Value>data source=173.248.129.77,1439%3buser id=sa%3bpassword=Pa%24%24w0rd%4021%3binitial catalog=EgolfDBnew%3bPersist Security Info=true%3b TrustServerCertificate=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
