@@ -74,16 +74,11 @@ namespace GolfWebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Handicap")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Hole")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Par")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Yardage")
+                    b.Property<int>("NumberOfHoles")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -142,6 +137,33 @@ namespace GolfWebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GameTypes");
+                });
+
+            modelBuilder.Entity("GolfWebApi.Models.Hole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Handicap")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Par")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Yardage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Hole");
                 });
 
             modelBuilder.Entity("GolfWebApi.Models.Member", b =>
@@ -271,6 +293,15 @@ namespace GolfWebApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GolfWebApi.Models.Hole", b =>
+                {
+                    b.HasOne("GolfWebApi.Models.Course", null)
+                        .WithMany("Holes")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GolfWebApi.Models.TeeSlot", b =>
                 {
                     b.HasOne("GolfWebApi.Models.Caddy", null)
@@ -281,6 +312,11 @@ namespace GolfWebApi.Migrations
             modelBuilder.Entity("GolfWebApi.Models.Caddy", b =>
                 {
                     b.Navigation("TeeSlots");
+                });
+
+            modelBuilder.Entity("GolfWebApi.Models.Course", b =>
+                {
+                    b.Navigation("Holes");
                 });
 
             modelBuilder.Entity("GolfWebApi.Models.GameType", b =>

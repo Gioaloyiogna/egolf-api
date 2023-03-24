@@ -1,4 +1,4 @@
-﻿global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
 using GolfWebApi.Models;
 
 namespace GolfWebApi.Data;
@@ -18,4 +18,6 @@ public class DataContext : DbContext
     public DbSet<Caddy> Caddies { get; set; }
     
     public DbSet<TeeSlot> TeeSlots { get; set; }
+    
+    public DbSet<GolfWebApi.Models.Hole> Hole { get; set; } = default!;
 } 

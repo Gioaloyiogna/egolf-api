@@ -3,8 +3,8 @@
 public class Course 
 {
   public int Id { get; set; }
-  public int Hole { get; set; }
-  public int Par { get; set; }
-  public int Yardage { get; set; }
-  public int Handicap { get; set; }
+  public string Name { get; set; } = string.Empty;
+  public int NumberOfHoles { get; set; } 
+  
+  public ICollection<Hole> Holes { get; set; } = new List<Hole>();
 }
