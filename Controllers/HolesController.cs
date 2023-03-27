@@ -23,24 +23,24 @@ namespace GolfWebApi.Controllers
 
         // GET: api/Holes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hole>>> GetHole()
+        public async Task<ActionResult<IEnumerable<Hole>>> GetHoles()
         {
-          if (_context.Hole == null)
+          if (_context.Holes == null)
           {
               return NotFound();
           }
-          return await _context.Hole.ToListAsync();
+            return await _context.Holes.ToListAsync();
         }
 
         // GET: api/Holes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Hole>> GetHole(int id)
         {
-          if (_context.Hole == null)
+          if (_context.Holes == null)
           {
               return NotFound();
           }
-          var hole = await _context.Hole.FindAsync(id);
+            var hole = await _context.Holes.FindAsync(id);
 
             if (hole == null)
             {
@@ -86,11 +86,11 @@ namespace GolfWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Hole>> PostHole(Hole hole)
         {
-          if (_context.Hole == null)
+          if (_context.Holes == null)
           {
-              return Problem("Entity set 'DataContext.Hole'  is null.");
+              return Problem("Entity set 'DataContext.Holes'  is null.");
           }
-            _context.Hole.Add(hole);
+            _context.Holes.Add(hole);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetHole", new { id = hole.Id }, hole);
@@ -100,17 +100,17 @@ namespace GolfWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHole(int id)
         {
-            if (_context.Hole == null)
+            if (_context.Holes == null)
             {
                 return NotFound();
             }
-            var hole = await _context.Hole.FindAsync(id);
+            var hole = await _context.Holes.FindAsync(id);
             if (hole == null)
             {
                 return NotFound();
             }
 
-            _context.Hole.Remove(hole);
+            _context.Holes.Remove(hole);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace GolfWebApi.Controllers
 
         private bool HoleExists(int id)
         {
-            return (_context.Hole?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Holes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

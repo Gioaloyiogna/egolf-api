@@ -19,5 +19,7 @@ public class DataContext : DbContext
     
     public DbSet<TeeSlot> TeeSlots { get; set; }
     
-    public DbSet<GolfWebApi.Models.Hole> Hole { get; set; } = default!;
+    public DbSet<Hole> Holes { get; set; } = default!;
+    
+    public DbSet<Fee> Fees { get; set; } = default!;
 } 
