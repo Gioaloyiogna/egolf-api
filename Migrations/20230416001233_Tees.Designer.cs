@@ -4,6 +4,7 @@ using GolfWebApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolfWebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230416001233_Tees")]
+    partial class Tees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -194,31 +197,6 @@ namespace GolfWebApi.Migrations
                     b.ToTable("Holes");
                 });
 
-            modelBuilder.Entity("GolfWebApi.Models.Holestbl", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Handicap")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HoleNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Par")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Yardage")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Holetbls");
-                });
-
             modelBuilder.Entity("GolfWebApi.Models.Member", b =>
                 {
                     b.Property<long>("Id")
@@ -262,6 +240,36 @@ namespace GolfWebApi.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("GolfWebApi.Models.Tee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("caddyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("memberId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("playerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("playerType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("teeTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("caddyId");
+
+                    b.ToTable("Tees");
+                });
+
             modelBuilder.Entity("GolfWebApi.Models.TeeSlot", b =>
                 {
                     b.Property<int>("Id")
@@ -276,10 +284,7 @@ namespace GolfWebApi.Migrations
                     b.Property<int?>("caddyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("memberCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("memberId")
+                    b.Property<int>("memberId")
                         .HasColumnType("int");
 
                     b.Property<string>("playerEmail")
@@ -295,8 +300,6 @@ namespace GolfWebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("caddyId");
 
                     b.ToTable("TeeSlots");
                 });
@@ -319,7 +322,7 @@ namespace GolfWebApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GolfWebApi.Models.TeeSlot", b =>
+            modelBuilder.Entity("GolfWebApi.Models.Tee", b =>
                 {
                     b.HasOne("GolfWebApi.Models.Caddy", null)
                         .WithMany("TeeSlots")

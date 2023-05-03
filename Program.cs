@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GolfWebApi.Settings;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Configuration;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -16,6 +21,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -37,7 +43,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Token"]))
         };
     });
 
@@ -45,6 +51,26 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddCors(options =>{
+//    options.AddPolicy(name: myAllowedSpecificOrigins,
+//        policy =>
+//        {
+//              policy.WithOrigins("http://localhost:3000/")
+//            .AllowAnyHeader()
+//            .AllowAnyMethod();
+//            ;
+//        });
+//});
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AhercodeWebApi", Version = "v1" });
+});
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,6 +82,7 @@ else
 {
     app.UseHsts();
 }
+app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "AhercodeWebApi v1"));
 
 app.UseSwagger();
 app.UseSwaggerUI();

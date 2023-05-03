@@ -17,9 +17,11 @@ public class DataContext : DbContext
 
     public DbSet<Caddy> Caddies { get; set; }
     
-    public DbSet<TeeSlot> TeeSlots { get; set; }
-    
     public DbSet<Hole> Holes { get; set; } = default!;
     
     public DbSet<Fee> Fees { get; set; } = default!;
+    public DbSet<TeeSlot> TeeSlots { get; set; }
+    public DbSet<Holestbl> Holetbls { get; set; } = default!;
+
+
 } 
