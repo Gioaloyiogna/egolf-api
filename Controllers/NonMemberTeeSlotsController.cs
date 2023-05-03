@@ -7,25 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GolfWebApi.Data;
 using GolfWebApi.Models;
+using DevExpress.CodeParser;
 using MimeKit.Text;
 using MimeKit;
-
 using MailKit.Net.Smtp;
 namespace GolfWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeeSlotsController : ControllerBase
+    public class NonMemberTeeSlotsController : ControllerBase
     {
         private readonly DataContext _context;
-        
 
-        public TeeSlotsController(DataContext context)
+        public NonMemberTeeSlotsController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/TeeSlots
+        // GET: api/NonMemberTeeSlots
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeeSlot>>> GetTeeSlots()
         {
@@ -36,26 +35,25 @@ namespace GolfWebApi.Controllers
             return await _context.TeeSlots.ToListAsync();
         }
 
-        // GET: api/TeeSlots/5
-        [HttpGet("{teeTime}")]
-        public async Task<ActionResult<IEnumerable<TeeSlot>>> GetTeeSlotAsync(string teeTime)
+        // GET: api/NonMemberTeeSlots/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TeeSlot>> GetTeeSlot(int id)
         {
-            if (_context.TeeSlots == null)
-            {
-                return NotFound();
-            }
-            var teeSlot = _context.TeeSlots.Where(te => te.teeTime == teeTime);
+          if (_context.TeeSlots == null)
+          {
+              return NotFound();
+          }
+            var teeSlot = await _context.TeeSlots.FindAsync(id);
 
             if (teeSlot == null)
             {
                 return NotFound();
             }
 
-            return await teeSlot.ToListAsync();
+            return teeSlot;
         }
 
-
-        // PUT: api/TeeSlots/5
+        // PUT: api/NonMemberTeeSlots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeeSlot(int id, TeeSlot teeSlot)
@@ -86,26 +84,20 @@ namespace GolfWebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/TeeSlots
+        // POST: api/NonMemberTeeSlots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TeeSlot>> PostTeeSlot(TeeSlot teeSlot)
         {
-
             try
             {
-
-                var member = await _context.Members.FindAsync((long?)teeSlot.memberId);
-                var memberExists = _context.TeeSlots.Where(te => te.memberId == teeSlot.memberId && te.teeTime == teeSlot.teeTime);
+                var memberExists = _context.TeeSlots.Where(te => te.playerEmail == teeSlot.playerEmail && te.teeTime == teeSlot.teeTime);
                 var availableSlot = _context.TeeSlots.Where(te => te.teeTime == teeSlot.teeTime).Count();
                 if (_context.TeeSlots == null)
                 {
                     return Problem("Entity set 'DataContext.TeeSlots'  is null.");
                 }
-                if (member == null)
-                {
-                    return StatusCode(500, "Member does not exist");
-                }
+
                 // checking if member exists
 
                 if (memberExists.Any()) { return StatusCode(500, "Member already exists"); }
@@ -118,12 +110,11 @@ namespace GolfWebApi.Controllers
 
                 var newMember = new TeeSlot
                 {
-                    memberId = teeSlot.memberId,
-                    memberCode = member.Code,
-                    playerType = "Member",
-                    playerEmail = member?.Email,
+
+                    playerType = teeSlot.playerType,
+                    playerEmail = teeSlot.playerEmail,
                     teeTime = teeSlot.teeTime,
-                    playerName = member?.Fname + member?.Lname,
+                    playerName = teeSlot.playerName,
                     availabilityStatus = teeSlot.availabilityStatus,
                     caddyId = teeSlot.caddyId
 
@@ -132,17 +123,13 @@ namespace GolfWebApi.Controllers
                 _context.TeeSlots.Add(newMember);
                 await _context.SaveChangesAsync();
 
-
                 var email = new MimeMessage();
-                var pwaLink = "https://egolfpwa.onrender.com/";
                 email.From.Add(MailboxAddress.Parse("egolfplatform@gmail.com"));
-                email.To.Add(MailboxAddress.Parse(member?.Email));
+                email.To.Add(MailboxAddress.Parse(teeSlot.playerEmail));
                 email.Subject = "Activation on Egolf platform";
-
-
                 email.Body = new TextPart(TextFormat.Plain)
                 {
-                    Text = $"Note that you've been scheduled for a game on the Egolf platform, happening at {teeSlot.teeTime}!. Kindly use the credentials below to connect to {pwaLink}. {member?.Email} as your username and {member?.Code}  as your password"
+                    Text = $"Note that you've been scheduled for a game on the Egolf platform, happening at {teeSlot.teeTime}!"
                 };
 
                 using var smtp = new SmtpClient();
@@ -165,15 +152,15 @@ namespace GolfWebApi.Controllers
 
             }
 
+        
+
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred while adding  member: {ex.Message}");
-            }
+    }
+}
 
-
-        }
-
-        // DELETE: api/TeeSlots/5
+        // DELETE: api/NonMemberTeeSlots/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeeSlot(int id)
         {

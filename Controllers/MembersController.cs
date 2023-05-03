@@ -1,9 +1,15 @@
 using GolfWebApi.Data;
 using GolfWebApi.Models;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using MimeKit.Text;
+using SQLitePCL;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace NewEgolfAPI.Controllers
 {
@@ -11,10 +17,12 @@ namespace NewEgolfAPI.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private readonly DataContext _context; 
+        private readonly DataContext _context;
+        private IWebHostEnvironment environment;
 
-        public MembersController(DataContext context)
+        public MembersController(DataContext context, IWebHostEnvironment env)
         {
+            this.environment= env;
             _context = context; 
         }
 
@@ -53,16 +61,25 @@ namespace NewEgolfAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMember(long id, Member member)
         {
+            //string newPic = "test.jpeg";
+
             if (id != member.Id)
             {
                 return BadRequest();
             }
+            // check if email and GGAID already exist
+            var existingMember = _context.Members.FirstOrDefault(x => x.Email == member.Email && x.Id != id && x.Ggaid != member.Ggaid);
+            if (existingMember != null) { return BadRequest("Email is already taken."); }
+            //member.Picture=saveImage(member?.Picture);
 
             _context.Entry(member).State = EntityState.Modified;
 
+
             try
             {
+
                 await _context.SaveChangesAsync();
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,6 +94,23 @@ namespace NewEgolfAPI.Controllers
             }
 
             return NoContent();
+
+
+        }
+
+
+
+        [NonAction]
+        public async Task<string> saveImage(IFormFile file)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(file.Name).Take(10).ToArray()).Replace(' ', '_');
+            imageName = imageName + DateTime.Now.ToString("yymmssff") + Path.GetExtension(file.Name);
+            var imagePath = Path.Combine(environment.ContentRootPath, "images", imageName);
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            return imageName;
         }
 
         // POST: api/Members
@@ -124,6 +158,8 @@ namespace NewEgolfAPI.Controllers
 
             return CreatedAtAction("GetMember", new { id = member.Id }, member);
         }
+      
+        
 
         // DELETE: api/Members/5
         [HttpDelete("{id}")]
@@ -144,6 +180,8 @@ namespace NewEgolfAPI.Controllers
 
             return NoContent();
         }
+
+      
 
         private bool MemberExists(long id)
         {

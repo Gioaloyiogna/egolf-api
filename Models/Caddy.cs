@@ -1,4 +1,6 @@
-﻿namespace GolfWebApi.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace GolfWebApi.Models
 {
     public class Caddy
     {
@@ -21,5 +23,7 @@
         public string Address { get; set; } = string.Empty;
 
         public ICollection<TeeSlot>? TeeSlots { get; set; }
+
+       
     }
 }

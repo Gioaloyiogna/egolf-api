@@ -60,6 +60,23 @@ namespace GolfWebApi.Controllers
                 return BadRequest();
             }
 
+            // checking if email and code already exists
+
+            bool caddyEmailExists = _context.Caddies.Where(te => te.Email == caddy.Email && te.Id !=caddy.Id ).Any();
+            bool caddyCodeExists = _context.Caddies.Where(te => te.Code == caddy.Code && te.Id != caddy.Id).Any();
+
+            if (caddyEmailExists)
+            {
+                return StatusCode(500, $"Email Already exists");
+
+            }
+
+            if (caddyCodeExists)
+            {
+                return StatusCode(500, $"Code Already exists");
+
+            }
+
             _context.Entry(caddy).State = EntityState.Modified;
 
             try
@@ -86,10 +103,38 @@ namespace GolfWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Caddy>> PostCaddy(Caddy caddy)
         {
-          if (_context.Caddies == null)
+           
+
+            if (_context.Caddies == null)
           {
               return Problem("Entity set 'DataContext.Caddies'  is null.");
           }
+            //var caddiesCount = _context.Caddies.Count();
+            //caddiesCount++;
+            //string prefix = "AGCC";
+            //string caddiesCode = " ";
+            //switch (caddiesCount.ToString().Length)
+            //{
+            //    case 1:
+            //        caddiesCode = prefix+ "000"+caddiesCount;
+            //        break;
+            //    case 2:
+            //        caddiesCode = prefix+"00"+caddiesCount;
+            //        break;
+            //    case 3:
+            //        caddiesCode = prefix+"0" +caddiesCount;
+            //        break;
+            //    case 4:
+            //    default:
+            //        caddiesCode = prefix + ' ' + caddiesCount;
+            //        break;
+            //}
+            //caddy.Code = caddiesCode;
+            var checkMemberExists=_context.Caddies.Where(te=>te.Email == caddy.Email && te.Code== caddy.Code).Any();
+            if (checkMemberExists)
+            {
+                return StatusCode(500, $"Member already exists");
+            }
             _context.Caddies.Add(caddy);
             await _context.SaveChangesAsync();
 
