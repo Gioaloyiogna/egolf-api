@@ -118,7 +118,6 @@ namespace NewEgolfAPI.Controllers
             {
                 smtp.Disconnect(true);
             }
-
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 
