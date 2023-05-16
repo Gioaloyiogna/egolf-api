@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolfWebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230430002853_HolesMigration")]
-    partial class HolesMigration
+    [Migration("20230509114834_caddyTee")]
+    partial class caddyTee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,41 @@ namespace GolfWebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Caddies");
+                });
+
+            modelBuilder.Entity("GolfWebApi.Models.CaddyTee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("caddyEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("caddyGender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("caddyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("caddyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("caddyPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("teeTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CaddyTees");
                 });
 
             modelBuilder.Entity("GolfWebApi.Models.Course", b =>

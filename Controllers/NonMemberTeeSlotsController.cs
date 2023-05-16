@@ -178,6 +178,25 @@ namespace GolfWebApi.Controllers
 
             return NoContent();
         }
+        [HttpDelete("{email}/{teeTime}")]
+        public async Task<IActionResult> DeleteTeeSlot(string email, string teeTime)
+        {
+            if (_context.TeeSlots == null)
+            {
+                return NotFound();
+            }
+            //var teeSlot = await _context.TeeSlots.FindAsync(id);
+            var teeSlot = await _context.TeeSlots.Where(m => m.playerEmail == email && m.teeTime == teeTime).FirstOrDefaultAsync();
+            if (teeSlot == null)
+            {
+                return BadRequest("Non Member does not exist");
+            }
+
+            _context.TeeSlots.Remove(teeSlot);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
 
         private bool TeeSlotExists(int id)
         {

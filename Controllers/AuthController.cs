@@ -106,7 +106,8 @@ namespace GolfWebApi.Controllers
                 try
                 {
                     TokenDto tokenResponse = new TokenDto();
-                   var curMember = _context.Members.Where(m => m.Email == loginDto.email).FirstOrDefault();
+                   var curMember = _context.Members.Where(m => m.Email == loginDto.email && m.Code == loginDto.code).FirstOrDefault();
+
 
                     if (curMember != null)
                     {
@@ -129,7 +130,7 @@ namespace GolfWebApi.Controllers
                 try
                 {
                     TokenDto tokenResponse = new TokenDto();
-                   var curCaddy = _context.Caddies.Where(m => m.Email == loginDto.email).FirstOrDefault();
+                   var curCaddy = _context.Caddies.Where(m => m.Email == loginDto.email && m.Code == loginDto.code).FirstOrDefault();
 
                     if (curCaddy != null)
                     {

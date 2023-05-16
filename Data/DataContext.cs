@@ -22,6 +22,8 @@ public class DataContext : DbContext
     public DbSet<Fee> Fees { get; set; } = default!;
     public DbSet<TeeSlot> TeeSlots { get; set; }
     public DbSet<Holestbl> Holetbls { get; set; } = default!;
+    public DbSet<CaddyTee> CaddyTees { get; set; } = default!;
+  
 
 
 } 

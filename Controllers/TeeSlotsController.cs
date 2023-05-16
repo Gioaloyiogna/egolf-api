@@ -174,23 +174,24 @@ namespace GolfWebApi.Controllers
         }
 
         // DELETE: api/TeeSlots/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeeSlot(int id)
+        [HttpDelete("{id}/{teeTime}")]
+        public async Task<IActionResult> DeleteTeeSlot(int id, string teeTime)
         {
             if (_context.TeeSlots == null)
             {
                 return NotFound();
             }
-            var teeSlot = await _context.TeeSlots.FindAsync(id);
+            //var teeSlot = await _context.TeeSlots.FindAsync(id);
+            var teeSlot= await _context.TeeSlots.Where(m=>m.Id==id && m.teeTime == teeTime).FirstOrDefaultAsync();
             if (teeSlot == null)
             {
-                return NotFound();
+                return BadRequest("Member does not exist");
             }
 
             _context.TeeSlots.Remove(teeSlot);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool TeeSlotExists(int id)
