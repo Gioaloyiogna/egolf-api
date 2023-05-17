@@ -89,7 +89,11 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+app.UseStaticFiles( new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Uploads")),
+    RequestPath = "/Uploads"
+});
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
