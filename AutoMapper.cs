@@ -1,0 +1,123 @@
+﻿using AhercodeWebAPI.HR.Data;
+using AhercodeWebAPI.HR.Dtos.AdminUser;
+using AhercodeWebAPI.HR.Dtos.Appraisal;
+using AhercodeWebAPI.HR.Dtos.AppraisalPerfTransaction;
+using AhercodeWebAPI.HR.Dtos.Benefit;
+using AhercodeWebAPI.HR.Dtos.BenefitCat;
+using AhercodeWebAPI.HR.Dtos.Category;
+using AhercodeWebAPI.HR.Dtos.CompanyAsset;
+using AhercodeWebAPI.HR.Dtos.CompensationBenefitTransaction;
+using AhercodeWebAPI.HR.Dtos.CompensationPerk;
+using AhercodeWebAPI.HR.Dtos.Currency;
+using AhercodeWebAPI.HR.Dtos.Deduction;
+using AhercodeWebAPI.HR.Dtos.DeductionCat;
+using AhercodeWebAPI.HR.Dtos.Department;
+using AhercodeWebAPI.HR.Dtos.Division;
+using AhercodeWebAPI.HR.Dtos.Employee;
+using AhercodeWebAPI.HR.Dtos.EmployeeQualification;
+using AhercodeWebAPI.HR.Dtos.EmployeeSkill;
+using AhercodeWebAPI.HR.Dtos.Experiences;
+using AhercodeWebAPI.HR.Dtos.FamilyMember;
+using AhercodeWebAPI.HR.Dtos.Grade;
+using AhercodeWebAPI.HR.Dtos.GradeLeave;
+using AhercodeWebAPI.HR.Dtos.GradePerk;
+using AhercodeWebAPI.HR.Dtos.JobTitle;
+using AhercodeWebAPI.HR.Dtos.JobTitleQualification;
+using AhercodeWebAPI.HR.Dtos.JobTitleSkill;
+using AhercodeWebAPI.HR.Dtos.Leave;
+using AhercodeWebAPI.HR.Dtos.LeavePlaning;
+using AhercodeWebAPI.HR.Dtos.Medical;
+using AhercodeWebAPI.HR.Dtos.MedicalTransaction;
+using AhercodeWebAPI.HR.Dtos.Nationality;
+using AhercodeWebAPI.HR.Dtos.Notch;
+using AhercodeWebAPI.HR.Dtos.NoteCategory;
+using AhercodeWebAPI.HR.Dtos.NoteTransaction;
+using AhercodeWebAPI.HR.Dtos.Parameter;
+using AhercodeWebAPI.HR.Dtos.Paygroup;
+using AhercodeWebAPI.HR.Dtos.Period;
+using AhercodeWebAPI.HR.Dtos.Perk;
+using AhercodeWebAPI.HR.Dtos.Product;
+using AhercodeWebAPI.HR.Dtos.Qualifications;
+using AhercodeWebAPI.HR.Dtos.Recruitment;
+using AhercodeWebAPI.HR.Dtos.RecruitmentApplicant;
+using AhercodeWebAPI.HR.Dtos.RecruitmentTransaction;
+using AhercodeWebAPI.HR.Dtos.ServiceCost;
+using AhercodeWebAPI.HR.Dtos.ServiceProvider;
+using AhercodeWebAPI.HR.Dtos.Skills;
+using AhercodeWebAPI.HR.Dtos.Tax;
+using AhercodeWebAPI.HR.Dtos.TaxFormula;
+using AhercodeWebAPI.HR.Dtos.Trainee;
+using AhercodeWebAPI.HR.Dtos.Training;
+using AhercodeWebAPI.HR.Dtos.TrainingDevTransaction;
+using AhercodeWebAPI.HR.Dtos.TrainingSchedule;
+using AhercodeWebAPI.HR.Dtos.Unit;
+using AhercodeWebAPI.HR.Dtos.User;
+using AhercodeWebAPI.HR.UserModels;
+using AutoMapper;
+
+namespace AhercodeWebAPI.HR.Helpers
+{
+    public class AutoMapper : Profile
+    {
+        public AutoMapper()
+        {
+            CreateMap<AppraisalCreateDto, Appraisal>().ReverseMap();
+            CreateMap<CompanyAssetCreateDto, CompanyAsset>().ReverseMap();
+            CreateMap<CurrencyCreateDto, Currency>().ReverseMap();
+            CreateMap<LeaveCreateDto, Leave>().ReverseMap();
+            CreateMap<MedicalCreateDto, Medical>().ReverseMap();
+            CreateMap<NoteCategoryCreateDto, NoteCategory>().ReverseMap();
+            CreateMap<ParameterCreateDto, Parameter>().ReverseMap();
+            CreateMap<TrainingCreateDto, training>().ReverseMap();
+            CreateMap<RecruitmentCreateDto, Recruitment>().ReverseMap();
+            CreateMap<NationalityCreateDto, Nationality>().ReverseMap();
+            CreateMap<PaygroupCreateDto, Paygroup>().ReverseMap(); 
+            CreateMap<DivisionCreateDto, Division>().ReverseMap(); 
+            CreateMap<DepartmentCreateDto, Department>().ReverseMap(); 
+            CreateMap<DepartmentEditDto, Department>().ReverseMap(); 
+            CreateMap<UnitCreateDto, Unit>().ReverseMap(); 
+            CreateMap<UnitEditDto, Unit>().ReverseMap(); 
+            CreateMap<JobTitleCreateDto, JobTitle>().ReverseMap(); 
+            CreateMap<CategoryCreateDto, Category>().ReverseMap(); 
+            CreateMap<EmployeeCreateDto, Employee>().ReverseMap(); 
+            CreateMap<SkillCreateDto, Skill>().ReverseMap(); 
+            CreateMap<QualificationCreateDto, Qualification>().ReverseMap(); 
+            CreateMap<ExperienceCreateDto, Experience>().ReverseMap(); 
+            CreateMap<FamilyMemberCreateDto, FamilyMember>().ReverseMap(); 
+            CreateMap<GradeCreateDto, Grade>().ReverseMap(); 
+            CreateMap<GradeLeaveCreateDto, GradeLeave>().ReverseMap(); 
+            CreateMap<NotchCreateDto, Notch>().ReverseMap(); 
+            CreateMap<LeavePlaningCreateDto, LeavePlaning>().ReverseMap(); 
+            CreateMap<RecruitmentTransactionCreateDto, RecruitmentTransaction>().ReverseMap(); 
+            CreateMap<EmployeeQualificationCreateDto, EmployeeQualification>().ReverseMap(); 
+            CreateMap<EmployeeSkillCreateDto, EmployeeSkill>().ReverseMap(); 
+            CreateMap<JobTitleQualificationCreateDto, JobTitleQualification>().ReverseMap(); 
+            CreateMap<JobTitleSkillCreateDto, JobTitleSkill>().ReverseMap(); 
+            CreateMap<MedicalTransactionCreateDto, MedicalTransaction>().ReverseMap(); 
+            CreateMap<CompensationBenefitTransactionCreateDto, CompensationBenefitTransaction>().ReverseMap(); 
+            CreateMap<RecruitmentApplicantCreateDto, RecruitmentApplicant>().ReverseMap(); 
+            CreateMap<PeriodCreateDto, Period>().ReverseMap(); 
+            CreateMap<AppraisalPerfTransactionCreateDto, AppraisalPerfTransaction>().ReverseMap(); 
+            CreateMap<NoteTransactionCreateDto, NoteTransaction>().ReverseMap(); 
+            CreateMap<ProductCreateDto, Product>().ReverseMap(); 
+            CreateMap<ServiceProviderCreateDto, ServiceProvider>().ReverseMap(); 
+            CreateMap<ServiceCostCreateDto, ServiceCost>().ReverseMap(); 
+            CreateMap<TraineeCreateDto, Trainee>().ReverseMap(); 
+            CreateMap<TrainingDevTransactionCreateDto, TrainingDevTransaction>().ReverseMap(); 
+            CreateMap<TrainingScheduleCreateDto, TrainingSchedule>().ReverseMap();
+            CreateMap<AdminUserCreateDto, AdminUser>().ReverseMap();
+            CreateMap<BenefitCreateDto, Benefit>().ReverseMap();
+            CreateMap<BenefitCatCreateDto, BenefitCat>().ReverseMap();
+            CreateMap<DeductionCreateDto, Deduction>().ReverseMap();
+            CreateMap<DeductionCatCreateDto, DeductionCat>().ReverseMap();
+            CreateMap<TaxFormulaCreateDto, TaxFormula>().ReverseMap();
+            CreateMap<TaxCreateDto, Tax>().ReverseMap();
+            CreateMap<PerkCreateDto, Perk>().ReverseMap();
+            CreateMap<GradePerkCreateDto, GradePerk>().ReverseMap();
+            CreateMap<CompensationPerkCreateDto, CompensationPerk>().ReverseMap();
+            CreateMap<UserCreateDto, User>().ReverseMap();
+            CreateMap<UserPutDto, User>().ReverseMap();
+
+        }
+    }
+}
