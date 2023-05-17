@@ -18,11 +18,11 @@ namespace NewEgolfAPI.Controllers
     public class MembersController : ControllerBase
     {
         private readonly DataContext _context;
-        private IWebHostEnvironment environment;
+        private IWebHostEnvironment webHostEnvironment;
 
         public MembersController(DataContext context, IWebHostEnvironment env)
         {
-            this.environment= env;
+            this.webHostEnvironment= env;
             _context = context; 
         }
 
