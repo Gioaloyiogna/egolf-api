@@ -5,7 +5,6 @@ namespace GolfWebApi.Dtos
     public class MemberDto
     {
         public long Id { get; set; }
-        public IFormFile? Picture { get; set; }
         public string? Code { get; set; }
         public string? Fname { get; set; }
         public string? Lname { get; set; }
@@ -16,5 +15,7 @@ namespace GolfWebApi.Dtos
         public string? PlayerHandicap { get; set; }
         public string? Ggaid { get; set; }
         public string? Status { get; set; } = "Inactive";
+        public string? Picture { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }
