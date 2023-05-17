@@ -122,18 +122,22 @@ namespace NewEgolfAPI.Controllers
             {
               return Problem("Entity set 'DataContext.Members'  is null.");
             }
-
+            var checkMember = _context.Members.Where(te => te.Code == member.Code || te.Email==member.Email || te.Ggaid==member.Ggaid ).FirstOrDefault();
+            if (checkMember != null)
+            {
+                return BadRequest("Member Already Exist");
+            } 
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("egolfplatform@gmail.com"));
             email.To.Add(MailboxAddress.Parse(member.Email));
             email.Subject = "Activation Code";
             //generate random code
-            var code = new Random().Next(100000, 999999);
-            member.Code = code.ToString();
+            //var code = new Random().Next(100000, 999999);
+            //member.Code = code.ToString();
                 
             email.Body = new TextPart(TextFormat.Plain)
             {
-                Text = $"Your activation code is {code}"
+                Text = $"Your activation code is {member.Code}"
             };
 
             using var smtp = new SmtpClient();
