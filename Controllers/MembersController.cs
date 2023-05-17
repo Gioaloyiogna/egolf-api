@@ -133,12 +133,14 @@ namespace NewEgolfAPI.Controllers
         // POST: api/Members
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
+        public async Task<ActionResult<Member>> PostMember([FromForm] MemberCreateDto memberDto)
         {
             if (_context.Members == null)
             {
               return Problem("Entity set 'DataContext.Members'  is null.");
             }
+            memberDto.ImageUrl = await UploadImage(memberDto.ImageFile);
+            var employee = mapper.Map<Member>(memberDto);
 
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("egolfplatform@gmail.com"));
