@@ -101,16 +101,33 @@ namespace NewEgolfAPI.Controllers
 
 
         [NonAction]
-        public async Task<string> saveImage(IFormFile file)
+        public async Task<string> UploadImage(IFormFile? imageFile)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(file.Name).Take(10).ToArray()).Replace(' ', '_');
-            imageName = imageName + DateTime.Now.ToString("yymmssff") + Path.GetExtension(file.Name);
-            var imagePath = Path.Combine(environment.ContentRootPath, "images", imageName);
-            using (var stream = new FileStream(imagePath, FileMode.Create))
+
+            var mes = "No file was selected";
+
+            if (imageFile != null)
             {
-                await file.CopyToAsync(stream);
+                try
+                {
+                    string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+                    imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+                    var imagePath = Path.Combine(webHostEnvironment.ContentRootPath, "Uploads/Member", imageName);
+
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+                    return imageName;
+                }
+                catch (Exception e)
+                {
+
+                    return e.ToString();
+                }
             }
-            return imageName;
+            return mes;
+
         }
 
         // POST: api/Members
