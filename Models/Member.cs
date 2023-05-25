@@ -7,6 +7,7 @@ public class Member
     public long Id { get; set; }
    
     public string? Code { get; set; } 
+    public string? MembershipId { get; set; }   
     public string? Fname { get; set; } 
     public string? Lname { get; set; } 
     public string? Phone { get; set; }
@@ -17,4 +18,5 @@ public class Member
     public string? Ggaid { get; set; } 
     public string? Status { get; set; } = "Inactive";
     public string? Picture { get; set; }
+    
 }

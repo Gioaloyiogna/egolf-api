@@ -6,6 +6,7 @@ namespace GolfWebApi.Dtos
     {
         public long Id { get; set; }
         public string? Code { get; set; }
+        public string? MembershipId { get; set; }
         public string? Fname { get; set; }
         public string? Lname { get; set; }
         public string? Phone { get; set; }

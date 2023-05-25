@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolfWebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230509114834_caddyTee")]
-    partial class caddyTee
+    [Migration("20230523104518_addColumnToMembers")]
+    partial class addColumnToMembers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,7 +286,13 @@ namespace GolfWebApi.Migrations
                     b.Property<string>("Lname")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MembershipId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PlayerHandicap")

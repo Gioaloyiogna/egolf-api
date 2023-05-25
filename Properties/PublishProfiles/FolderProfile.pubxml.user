@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\lenovo\Desktop\egolf-api\bin\Release\net7.0\publish\</_PublishTargetUrl>
-    <History>False|2023-05-03T16:48:31.6542252Z;False|2023-04-17T19:59:49.0222585+00:00;False|2023-04-12T13:18:02.9771708+00:00;False|2023-04-12T13:14:11.3002297+00:00;False|2023-04-12T13:12:35.6904697+00:00;True|2023-03-22T12:34:29.8144227+00:00;True|2023-03-22T10:41:50.8488621+00:00;</History>
+    <_PublishTargetUrl>C:\Users\phili\source\repos\egolf-api\bin\Release\net7.0\publish\</_PublishTargetUrl>
+    <History>False|2023-05-18T18:06:03.8810849Z;False|2023-05-18T18:02:44.4327938+00:00;False|2023-05-18T18:00:53.6539525+00:00;False|2023-05-18T18:00:33.4525512+00:00;False|2023-05-03T16:48:31.6542252+00:00;False|2023-04-17T19:59:49.0222585+00:00;False|2023-04-12T13:18:02.9771708+00:00;False|2023-04-12T13:14:11.3002297+00:00;False|2023-04-12T13:12:35.6904697+00:00;True|2023-03-22T12:34:29.8144227+00:00;True|2023-03-22T10:41:50.8488621+00:00;</History>
     <LastFailureDetails />
     <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>

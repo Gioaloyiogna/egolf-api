@@ -1,4 +1,6 @@
+using AutoMapper;
 using GolfWebApi.Data;
+using GolfWebApi.Dtos;
 using GolfWebApi.Models;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Components.Forms;
@@ -19,10 +21,12 @@ namespace NewEgolfAPI.Controllers
     {
         private readonly DataContext _context;
         private IWebHostEnvironment webHostEnvironment;
+        private readonly IMapper mapper;
 
-        public MembersController(DataContext context, IWebHostEnvironment env)
+        public MembersController(DataContext context,IMapper mapper, IWebHostEnvironment env)
         {
             this.webHostEnvironment= env;
+            this.mapper = mapper;
             _context = context; 
         }
 
@@ -59,31 +63,45 @@ namespace NewEgolfAPI.Controllers
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(long id, Member member)
+        public async Task<IActionResult> PutMember(long id, [FromForm] MemberDto memberDto)
         {
-            //string newPic = "test.jpeg";
 
-            if (id != member.Id)
-            {
-                return BadRequest();
-            }
-            // check if email and GGAID already exist
-            var existingMember = _context.Members.FirstOrDefault(x => x.Email == member.Email && x.Id != id && x.Ggaid != member.Ggaid);
+            var existingMember = _context.Members.FirstOrDefault(x => (x.Email == memberDto.Email || x.Ggaid == memberDto.Ggaid || x.MembershipId == memberDto.MembershipId) && x.Id != memberDto.Id );
+            var memberPic = _context.Members.FirstOrDefault(x => x.Email == memberDto.Email && x.Id==memberDto.Id);
             if (existingMember != null) { return BadRequest("Email is already taken."); }
-            //member.Picture=saveImage(member?.Picture);
+
+            if (memberDto.ImageFile == null)
+            {
+                memberDto.Picture = memberPic?.Picture !=null? memberPic?.Picture:"";
+            }
+            else
+            {
+                memberDto.Picture = await UploadImage(memberDto.ImageFile);
+            }
+           
+            var member = mapper.Map<Member>(memberDto);
+
+
+             // Detach existing tracked entity with the same key value
+            var existingTrackedMember = _context.Members.Find(memberDto.Id);
+            if (existingTrackedMember != null)
+            {
+                _context.Entry(existingTrackedMember).State = EntityState.Detached;
+            }
 
             _context.Entry(member).State = EntityState.Modified;
 
 
             try
             {
+                //_context.Entry(member).Reload();
 
                 await _context.SaveChangesAsync();
 
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MemberExists(id))
+                if (!MemberExists(memberDto.Id))
                 {
                     return NotFound();
                 }
@@ -133,34 +151,48 @@ namespace NewEgolfAPI.Controllers
         // POST: api/Members
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Member>> PostMember([FromForm] MemberCreateDto memberDto)
+        public async Task<ActionResult<Member>> PostMember([FromForm] MemberDto memberDto)
         {
             if (_context.Members == null)
             {
               return Problem("Entity set 'DataContext.Members'  is null.");
             }
-<<<<<<< HEAD
-            var checkMember = _context.Members.Where(te => te.Code == member.Code || te.Email==member.Email || te.Ggaid==member.Ggaid ).FirstOrDefault();
+
+            memberDto.Picture = await UploadImage(memberDto.ImageFile);
+            var member = mapper.Map<Member>(memberDto);
+            //var random = new Random();
+            //string randomNumber = string.Empty;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    randomNumber = String.Concat(randomNumber, random.Next(10).ToString());
+            //}
+            //var checkCode = _context.Members.Where(te => te.Code == s).FirstAsync();
+            //if(checkCode != null)
+            //{
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        s = String.Concat(s, random.Next(10).ToString());
+            //    }
+            //}
+
+            var checkMember = _context.Members.Where(te => te.MembershipId == memberDto.Code || te.Email== memberDto.Email || te.Ggaid== memberDto.Ggaid ).FirstOrDefault();
             if (checkMember != null)
             {
                 return BadRequest("Member Already Exist");
             } 
-=======
-            memberDto.ImageUrl = await UploadImage(memberDto.ImageFile);
-            var employee = mapper.Map<Member>(memberDto);
 
->>>>>>> c911750289c4123d78aa074df624f45645842463
+            
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("egolfplatform@gmail.com"));
-            email.To.Add(MailboxAddress.Parse(member.Email));
+            email.To.Add(MailboxAddress.Parse(memberDto.Email));
             email.Subject = "Activation Code";
             //generate random code
-            //var code = new Random().Next(100000, 999999);
-            //member.Code = code.ToString();
-                
+            var code = new Random().Next(1000, 9999);
+            member.Code = code.ToString();
+
             email.Body = new TextPart(TextFormat.Plain)
             {
-                Text = $"Your activation code is {member.Code}"
+                Text = $"Your activation code is {code}"
             };
 
             using var smtp = new SmtpClient();
@@ -179,6 +211,8 @@ namespace NewEgolfAPI.Controllers
             {
                 smtp.Disconnect(true);
             }
+        
+            member.MembershipId= memberDto.Code;
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 

@@ -1,27 +1,28 @@
 using GolfWebApi.Data;
-using GolfWebApi.Extensions;
+//using GolfWebApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using GolfWebApi.Settings;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpOverrides;
-using System.Configuration;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
+using GolfWebApi.Helpers;
 
 var builder = WebApplication.CreateBuilder(args); 
 
 // Add services to the container.
-builder.Services.ConfigureCors();
+//builder.Services.ConfigureCors();
 
-builder.Services.ConfigureIISIntegration(); // Configure IIS Integration
+//builder.Services.ConfigureIISIntegration(); // Configure IIS Integration
 
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(opt =>
+
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//builder.Services.AddCors();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -51,28 +52,33 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddCors(options =>{
-//    options.AddPolicy(name: myAllowedSpecificOrigins,
-//        policy =>
-//        {
-//              policy.WithOrigins("http://localhost:3000/")
-//            .AllowAnyHeader()
-//            .AllowAnyMethod();
-//            ;
-//        });
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("https://app.sipconsult.net", "http://localhost:3000")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowAnyOrigin();
+    });
+});
+
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "AhercodeWebApi", Version = "v1" });
 });
+
 builder.Services.Configure<FormOptions>(o =>
 {
     o.ValueLengthLimit = int.MaxValue;
     o.MultipartBodyLengthLimit = int.MaxValue;
     o.MemoryBufferThreshold = int.MaxValue;
 });
-var app = builder.Build();
 
+builder.Services.AddAutoMapper(typeof(CustomAutoMapper).Assembly);
+var app = builder.Build();
+  
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -88,10 +94,23 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
+//app.UseCors(options =>
+//{
+//    string dev = "http://localhost:3000/";
+//    string test = "";
+//    string prod = "https://app.sipconsult.net/";
+
+//    options.WithOrigins(dev, test, prod)
+//    .AllowAnyMethod()
+//    .AllowAnyHeader()
+//    .AllowCredentials();
+//});
+
 
 app.UseStaticFiles( new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Uploads")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
     RequestPath = "/Uploads"
 });
 
@@ -99,8 +118,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
-
-app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

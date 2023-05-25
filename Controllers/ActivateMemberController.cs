@@ -94,7 +94,7 @@ namespace GolfWebApi.Controllers
             {
                 var Member = await _context.Members.FindAsync(id);
                 var memberCode = Member?.Code;
-                var pwaLink = "https://egolfpwa.onrender.com/";
+                var pwaLink = "https://app.sipconsult.net/egolfnew/";
                 if (Member != null)
                 {
                     Member.Status = "active";
