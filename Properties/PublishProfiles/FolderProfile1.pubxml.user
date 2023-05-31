@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\lenovo\Desktop\egolf-api\bin\Release\net7.0\publish\</_PublishTargetUrl>
-    <History>True|2023-05-03T17:39:05.9699975Z;False|2023-05-03T17:37:30.3437031+00:00;True|2023-05-03T17:32:22.6981149+00:00;True|2023-05-03T17:24:53.4361970+00:00;True|2023-05-03T16:52:27.3797690+00:00;True|2023-05-03T16:51:11.7890443+00:00;</History>
+    <_PublishTargetUrl>C:\Users\phili\source\repos\egolf-api\bin\Release\net7.0\publish\</_PublishTargetUrl>
+    <History>True|2023-05-29T10:38:28.1728409Z;True|2023-05-29T10:34:32.9985112+00:00;True|2023-05-03T17:39:05.9699975+00:00;False|2023-05-03T17:37:30.3437031+00:00;True|2023-05-03T17:32:22.6981149+00:00;True|2023-05-03T17:24:53.4361970+00:00;True|2023-05-03T16:52:27.3797690+00:00;True|2023-05-03T16:51:11.7890443+00:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
